@@ -2,13 +2,13 @@
 
 @layer base {
   :root {
-    --gold: #c9a961;
-    --gold-light: #e4c77a;
-    --gold-dark: #8b7434;
-    --obsidian: #0a0807;
-    --charcoal: #14100e;
-    --warm: #1a1411;
-    --cream: #f5ede0;
+    --gold: #b8b8b8;
+    --gold-light: #d4d4d4;
+    --gold-dark: #8a8a8a;
+    --obsidian: #0a0a0f;
+    --charcoal: #14141e;
+    --warm: #12121a;
+    --cream: #f0ebe3;
   }
 
   * {
