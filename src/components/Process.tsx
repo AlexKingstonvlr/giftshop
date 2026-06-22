@@ -43,7 +43,7 @@ export default function Process() {
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
             <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] font-sans-lux font-bold">
-              How It Works
+              How to Order
             </span>
             <div className="h-px w-12 bg-[var(--gold)]/60" />
           </div>

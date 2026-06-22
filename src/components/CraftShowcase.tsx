@@ -24,7 +24,7 @@ export default function CraftShowcase() {
   const headerRef = useScrollFade();
 
   return (
-    <section id="craft" className="py-24 px-6 relative overflow-hidden">
+    <section id="equipment-materials" className="py-24 px-6 relative overflow-hidden">
       <div className="absolute top-1/4 left-0 w-[400px] h-[400px] rounded-full bg-[var(--gold)]/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] rounded-full bg-blue-950/20 blur-[120px] pointer-events-none" />
 

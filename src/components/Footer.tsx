@@ -1,7 +1,11 @@
 import { Lock, Phone, MessageCircle, MapPin } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-const footerLinks = {
+type AnchorLink = { name: string; id: string };
+type RouteLink = { name: string; path: string };
+type FooterLink = AnchorLink | RouteLink;
+
+const footerLinks: Record<string, FooterLink[]> = {
   Crafts: [{ name: 'Epoxy Resin Gifts', id: 'collection' }, { name: 'Laser Cut Wood', id: 'collection' }, { name: '3D Printing', id: 'collection' }, { name: 'Special Orders', id: 'custom-order' }],
   Company: [{ name: 'About Us', path: '/about' }],
   Support: [{ name: 'FAQs', path: '/faqs' }, { name: 'Return/Refund Policy', path: '/refund-policy' }, { name: 'How to Order', id: 'how-it-works' }],
@@ -53,19 +57,21 @@ export default function Footer({ onOpenAdmin }: FooterProps) {
                 {category}
               </h4>
               <ul className="space-y-3.5">
-                {links.map((l) => (
+                {links.map((l) => {
+                  const isAnchor = 'id' in l;
+                  return (
                   <li key={l.name}>
-                    {'id' in l ? (
+                    {isAnchor ? (
                       <a
-                        href={`#${l.id}`}
-                        onClick={(e) => handleAnchor(e, l.id)}
+                        href={`#${(l as AnchorLink).id}`}
+                        onClick={(e) => handleAnchor(e, (l as AnchorLink).id)}
                         className="text-[var(--cream)]/70 hover:text-[var(--gold)] text-sm font-sans-lux transition-colors duration-300 font-medium"
                       >
                         {l.name}
                       </a>
                     ) : (
                       <Link
-                        to={l.path}
+                        to={(l as RouteLink).path}
                         onClick={() => window.scrollTo(0, 0)}
                         className="text-[var(--cream)]/70 hover:text-[var(--gold)] text-sm font-sans-lux transition-colors duration-300 font-medium"
                       >
@@ -73,7 +79,8 @@ export default function Footer({ onOpenAdmin }: FooterProps) {
                       </Link>
                     )}
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
           ))}

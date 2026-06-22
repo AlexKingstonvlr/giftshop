@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { type Product, type TestimonialItem, type Category } from '../data/products';
 import { X, Lock, PlusCircle, CheckCircle, Image as ImageIcon, FileText } from 'lucide-react';
 import { useSiteContent } from '../context/SiteContentContext';
@@ -34,6 +34,15 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
   const [testimQuote, setTestimQuote] = useState('');
   const [testimImage, setTestimImage] = useState('');
 
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (published) {
+      const t = setTimeout(() => setPublished(null), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [published]);
+
   if (!isOpen) return null;
 
   const handleLogin = (e: React.FormEvent) => {
@@ -64,6 +73,8 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
 
   const handleProductSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     
     // Minimal validation
     const finalName = prodName.trim() || 'Untitled Product';
@@ -84,6 +95,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
 
     onAddProduct(newProduct);
     setPublished({ type: 'product', name: newProduct.name });
+    setSubmitting(false);
 
     // Reset form
     setProdName('');
@@ -98,6 +110,8 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
   const handleTestimonialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!testimName || !testimQuote) return;
+    if (submitting) return;
+    setSubmitting(true);
 
     const initials = testimName
       .split(' ')
@@ -117,6 +131,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
 
     onAddTestimonial(newTestimonial);
     setPublished({ type: 'testimonial', name: newTestimonial.name });
+    setSubmitting(false);
 
     // Reset form
     setTestimName('');
@@ -384,9 +399,14 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
 
                 <button
                   type="submit"
-                  className="btn-gold w-full py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-semibold mt-4"
+                  disabled={submitting}
+                  className={`w-full py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-semibold mt-4 transition-all ${
+                    submitting
+                      ? 'bg-[var(--gold)]/50 text-[var(--obsidian)] cursor-not-allowed'
+                      : 'btn-gold'
+                  }`}
                 >
-                  Publish New Product
+                  {submitting ? 'Publishing…' : 'Publish New Product'}
                 </button>
               </form>
             ) : activeTab === 'testimonial' ? (
@@ -441,9 +461,14 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
 
                 <button
                   type="submit"
-                  className="btn-gold w-full py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-semibold mt-4"
+                  disabled={submitting}
+                  className={`w-full py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-semibold mt-4 transition-all ${
+                    submitting
+                      ? 'bg-[var(--gold)]/50 text-[var(--obsidian)] cursor-not-allowed'
+                      : 'btn-gold'
+                  }`}
                 >
-                  Publish Testimonial
+                  {submitting ? 'Publishing…' : 'Publish Testimonial'}
                 </button>
               </form>
             ) : (

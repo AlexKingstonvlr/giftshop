@@ -5,7 +5,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 const links = [
   { name: 'Collection', id: 'collection' },
   { name: 'Crafts', id: 'craft' },
-  { name: 'How It Works', id: 'how-it-works' },
+  { name: 'How to Order', id: 'how-it-works' },
   { name: 'Order Custom Gift', id: 'custom-order' },
   { name: 'Contact', id: 'contact' },
 ];
