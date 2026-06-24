@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useScrollFade } from '../hooks/useScrollFade';
 
 const craftFeatures = [
   {
@@ -22,34 +22,14 @@ const craftFeatures = [
 ];
 
 export default function CraftShowcase() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      const elements = sectionRef.current.querySelectorAll('.scroll-fade-item');
-      elements.forEach((el) => observer.observe(el));
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const headerRef = useScrollFade();
 
   return (
-    <section id="equipment-materials" ref={sectionRef} className="py-24 px-6 bg-transparent relative">
+    <section id="equipment-materials" className="py-24 px-6 relative bg-transparent">
       <div className="max-w-7xl mx-auto relative">
 
         {/* Section Header */}
-        <div className="scroll-fade-item opacity-0 translate-y-8 transition-all duration-700 ease-out text-center mb-20">
+        <div ref={headerRef} className="scroll-fade text-center mb-20">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
             <span className="text-sm tracking-[0.2em] uppercase text-[var(--primary)] font-sans-lux font-bold">
@@ -65,22 +45,22 @@ export default function CraftShowcase() {
           </p>
         </div>
 
-        {/* Features Container Panel */}
+        {/* Feature Cards Grid */}
         <div className="max-w-4xl mx-auto mb-16">
           <div className="space-y-6">
-            {craftFeatures.map((craft, i) => (
-              <div
-                key={craft.title}
-                className="scroll-fade-item opacity-0 translate-y-8 transition-all duration-700 ease-out bg-white p-8 rounded-2xl shadow-md border border-zinc-100 hover:border-[var(--gold)]/40 transition-all duration-500 group"
-                style={{ transitionDelay: `${i * 150}ms` }}
-              >
-                <div className="flex items-start gap-6">
-                  {/* Left Icon Panel */}
+            {craftFeatures.map((craft, i) => {
+              return (
+                <div
+                  key={craft.title}
+                  className="bg-white p-8 rounded-2xl shadow-md border border-zinc-100 hover:border-[var(--gold)]/40 transition-all duration-500 group flex flex-col md:flex-row items-start gap-6"
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  {/* Left Icon Container */}
                   <div className="w-14 h-14 rounded-2xl border border-zinc-200 flex items-center justify-center text-2xl flex-shrink-0 bg-zinc-50 group-hover:scale-110 group-hover:border-[var(--gold)]/40 transition-all duration-400 shadow-sm">
                     {craft.emoji}
                   </div>
 
-                  {/* Right Text Panel */}
+                  {/* Right Content Area */}
                   <div className="flex-1 font-sans-lux">
                     <h3 className="font-serif-lux text-2xl md:text-3xl text-zinc-900 mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
                       {craft.title}
@@ -88,23 +68,20 @@ export default function CraftShowcase() {
                     <p className="text-zinc-600 text-sm md:text-base leading-relaxed mb-6 font-normal">
                       {craft.desc}
                     </p>
-
-                    {/* High-Contrast Light Green Badges */}
                     <div className="flex flex-wrap gap-2">
                       {craft.stats.map((stat) => (
                         <span
                           key={stat}
-                          className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100/50"
+                          className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100/40"
                         >
                           {stat}
                         </span>
                       ))}
                     </div>
                   </div>
-
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
