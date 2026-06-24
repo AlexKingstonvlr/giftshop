@@ -73,7 +73,7 @@ export default function Process() {
                   {/* Left side - content on even steps */}
                   <div className={`${isEven ? 'md:text-right md:pr-14' : 'md:order-2 md:text-left md:pl-14'} pl-16 sm:pl-18`}>
                     <div className={`flex items-center gap-3 mb-3 ${isEven ? 'md:justify-end' : ''}`}>
-                      <span className="text-3xl p-3 bg-black/40 border border-white/10 rounded-2xl group-hover:border-[var(--gold)] transition-colors shadow-lg">{step.icon}</span>
+                      <span className="text-3xl p-3 bg-transparent border border-[var(--gold)]/20 rounded-2xl group-hover:border-[var(--gold)] transition-colors shadow-sm">{step.icon}</span>
                       <span className="text-sm tracking-[0.25em] uppercase text-[var(--gold)] font-sans-lux font-bold bg-white/5 px-3 py-2 rounded-lg border border-white/10">
                         {step.time}
                       </span>
