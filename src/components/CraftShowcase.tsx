@@ -24,11 +24,8 @@ export default function CraftShowcase() {
   const headerRef = useScrollFade();
 
   return (
-    <section id="equipment-materials" className="py-24 px-6 relative overflow-hidden">
-      <div className="absolute top-1/4 left-0 w-[400px] h-[400px] rounded-full bg-[var(--gold)]/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] rounded-full bg-blue-950/20 blur-[120px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section id="equipment-materials" className="py-24 px-6 relative">
+      <div className="max-w-7xl mx-auto relative">
         <div ref={headerRef} className="scroll-fade text-center mb-20">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
@@ -53,25 +50,28 @@ export default function CraftShowcase() {
                 <div
                   key={craft.title}
                   ref={ref}
-                  className="scroll-fade glass-lux-light p-8 border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 group rounded-2xl shadow-xl"
+                  className="scroll-fade relative overflow-hidden border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 group rounded-2xl shadow-xl"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center text-2xl flex-shrink-0 bg-white/5 group-hover:scale-110 group-hover:border-[var(--gold)] transition-all duration-400 shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+                  <div className="relative z-10 p-8 flex items-start gap-6">
+                    <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/40 flex items-center justify-center text-2xl flex-shrink-0 bg-black/30 group-hover:scale-110 group-hover:border-[var(--gold)] transition-all duration-400 shadow-lg">
                       {craft.emoji}
                     </div>
                     <div className="flex-1 font-sans-lux">
-                      <h3 className="font-serif-lux text-2xl md:text-3xl text-[var(--cream)] mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
+                      <h3 className="font-serif-lux text-2xl md:text-3xl text-white mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
                         {craft.title}
                       </h3>
-                      <p className="text-[var(--cream)]/80 text-sm md:text-base leading-relaxed mb-6 font-normal">
+                      <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-6 font-normal">
                         {craft.desc}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {craft.stats.map((stat) => (
                           <span
                             key={stat}
-                            className="text-[11px] tracking-[0.15em] uppercase text-white bg-[var(--primary)] px-3.5 py-1.5 rounded-lg font-bold"
+                            className="text-[11px] tracking-[0.15em] uppercase text-white bg-[var(--primary)]/90 px-3.5 py-1.5 rounded-lg font-bold"
                           >
                             {stat}
                           </span>

@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useScrollFade } from '../hooks/useScrollFade';
 import { categories, type Category, type Product } from '../data/products';
 import { ArrowUpRight, X, Ruler, Clock, Layers, MessageCircle } from 'lucide-react';
@@ -21,10 +21,10 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--gold)]/20 transition-colors"
+          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/40 flex items-center justify-center hover:bg-black/60 transition-colors"
           aria-label="Close"
         >
-          <X size={18} className="text-[var(--cream)]" />
+          <X size={18} className="text-white" />
         </button>
 
         <div className="relative aspect-square md:aspect-auto overflow-hidden bg-[var(--charcoal)] rounded-t-2xl md:rounded-tr-none md:rounded-l-2xl">
@@ -33,48 +33,48 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
             alt={product.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
 
-        <div className="p-8 md:p-10 flex flex-col justify-center font-sans-lux">
+        <div className="bg-white p-8 md:p-10 flex flex-col justify-center font-sans-lux">
           <span className="text-xs tracking-[0.2em] uppercase text-[var(--primary)] mb-2 font-bold font-sans-lux">
             {product.category}
           </span>
-          <h3 className="font-serif-lux text-3xl md:text-4xl text-[var(--cream)] mb-4 font-semibold leading-tight">
+          <h3 className="font-serif-lux text-3xl md:text-4xl text-zinc-900 mb-4 font-semibold leading-tight">
             {product.name}
           </h3>
-          <p className="text-[var(--cream)]/80 leading-relaxed mb-8 text-sm md:text-base">
+          <p className="text-zinc-600 leading-relaxed mb-8 text-sm md:text-base">
             {product.description}
           </p>
 
-          <div className="space-y-4 mb-8 pb-8 border-b border-[var(--border)] text-sm">
+          <div className="space-y-4 mb-8 pb-8 border-b border-zinc-200 text-sm">
             {product.material && (
               <div className="flex items-center gap-3">
                 <Layers size={16} className="text-[var(--primary)] flex-shrink-0" />
-                <span className="text-xs text-[var(--cream)]/60 uppercase tracking-wider min-w-[80px] font-semibold">Material</span>
-                <span className="text-[var(--cream)] font-medium">{product.material}</span>
+                <span className="text-xs text-zinc-400 uppercase tracking-wider min-w-[80px] font-semibold">Material</span>
+                <span className="text-zinc-800 font-medium">{product.material}</span>
               </div>
             )}
             {product.dimensions && (
               <div className="flex items-center gap-3">
                 <Ruler size={16} className="text-[var(--primary)] flex-shrink-0" />
-                <span className="text-xs text-[var(--cream)]/60 uppercase tracking-wider min-w-[80px] font-semibold">Size</span>
-                <span className="text-[var(--cream)] font-medium">{product.dimensions}</span>
+                <span className="text-xs text-zinc-400 uppercase tracking-wider min-w-[80px] font-semibold">Size</span>
+                <span className="text-zinc-800 font-medium">{product.dimensions}</span>
               </div>
             )}
             {product.leadTime && (
               <div className="flex items-center gap-3">
                 <Clock size={16} className="text-[var(--primary)] flex-shrink-0" />
-                <span className="text-xs text-[var(--cream)]/60 uppercase tracking-wider min-w-[80px] font-semibold">Delivery</span>
-                <span className="text-[var(--cream)] font-medium">{product.leadTime}</span>
+                <span className="text-xs text-zinc-400 uppercase tracking-wider min-w-[80px] font-semibold">Delivery</span>
+                <span className="text-zinc-800 font-medium">{product.leadTime}</span>
               </div>
             )}
           </div>
 
           <div className="flex items-end justify-between mb-8">
             <div>
-              <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--cream)]/50 mb-1 font-semibold">Approximate Price</p>
-              <p className="font-serif-lux text-4xl font-bold text-[var(--primary)]">{product.price}</p>
+              <p className="text-[10px] tracking-[0.2em] uppercase text-zinc-400 mb-1 font-semibold">Approximate Price</p>
+              <p className="font-serif-lux text-4xl font-bold text-zinc-900">{product.price}</p>
             </div>
           </div>
 
@@ -90,7 +90,7 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
                 const text = `Hi, I'm interested in the ${product.name} priced at ${product.price}. Can we discuss further?`;
                 window.open(`https://wa.me/919514585959?text=${encodeURIComponent(text)}`, '_blank');
               }}
-              className="btn-outline-gold text-xs uppercase px-7 py-4 rounded-xl tracking-[0.2em] font-bold text-center flex items-center justify-center gap-2"
+              className="text-xs uppercase px-7 py-4 rounded-xl tracking-[0.2em] font-bold text-center flex items-center justify-center gap-2 border-2 border-emerald-700 text-emerald-700 hover:bg-emerald-50 transition-all"
             >
               <MessageCircle size={16} /> WhatsApp Us
             </button>
@@ -144,7 +144,7 @@ function ProductCard({ product, index, onClick }: { product: Product; index: num
           className="w-full h-full object-cover product-image-zoom"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-75 group-hover:opacity-90 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:from-black/95 transition-opacity duration-500" />
 
         {/* Category badge */}
         <div className="absolute top-4 left-4 z-10">
@@ -160,13 +160,13 @@ function ProductCard({ product, index, onClick }: { product: Product; index: num
 
         {/* Bottom content */}
         <div className="absolute bottom-0 left-0 right-0 p-6 z-10 font-sans-lux">
-          <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--cream)]/50 mb-2 font-bold font-sans-lux">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 mb-2 font-bold font-sans-lux">
             Item #{String(product.id).length > 3 ? 'NEW' : String(product.id).padStart(2, '0')}
           </p>
-          <h3 className="font-serif-lux text-2xl text-[var(--cream)] mb-3 font-semibold leading-tight group-hover:text-[var(--gold)] transition-colors">
+          <h3 className="font-serif-lux text-2xl text-white mb-3 font-semibold leading-tight group-hover:text-[var(--gold)] transition-colors">
             {product.name}
           </h3>
-          <div className="flex items-center justify-between pt-3 border-t border-[var(--gold)]/20">
+          <div className="flex items-center justify-between pt-3 border-t border-white/10">
             <span className="font-serif-lux text-xl font-bold text-gold-static">{product.price}</span>
             <span className="text-[11px] tracking-wider text-[var(--gold)] uppercase font-bold group-hover:translate-x-1 transition-transform duration-300">
               View Details →
@@ -185,12 +185,24 @@ interface ProductsGridProps {
 export default function ProductsGrid({ products }: ProductsGridProps) {
   const [filter, setFilter] = useState<Category | 'All'>('All');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [visibleCount, setVisibleCount] = useState(9);
   const headerRef = useScrollFade();
 
   const filteredProducts = useMemo(
     () => (filter === 'All' ? products : products.filter((p) => p.category === filter)),
     [filter, products]
   );
+
+  const displayProducts = useMemo(
+    () => filteredProducts.slice(0, visibleCount),
+    [filteredProducts, visibleCount]
+  );
+
+  const hasMore = filteredProducts.length > visibleCount;
+
+  useEffect(() => {
+    setVisibleCount(9);
+  }, [filter]);
 
   const filterButtons: (Category | 'All')[] = ['All', ...categories];
 
@@ -232,7 +244,7 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product, i) => (
+          {displayProducts.map((product, i) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -241,6 +253,17 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
             />
           ))}
         </div>
+
+        {hasMore && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setVisibleCount(filteredProducts.length)}
+              className="btn-outline-gold text-xs uppercase px-10 py-4 rounded-xl tracking-[0.2em] font-bold font-sans-lux"
+            >
+              Show More ({filteredProducts.length - visibleCount} remaining)
+            </button>
+          </div>
+        )}
 
         {selectedProduct && (
           <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
