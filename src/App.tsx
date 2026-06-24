@@ -10,6 +10,7 @@ import RefundPolicy from './pages/RefundPolicy';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 import AdminDashboard from './components/AdminDashboard';
 import ParticleBackground from './components/ParticleBackground';
 import { initialProducts, initialTestimonials, type Product, type TestimonialItem } from './data/products';
@@ -122,6 +123,8 @@ export default function App() {
       </main>
 
       <Footer onOpenAdmin={() => setIsAdminOpen(true)} />
+
+      <BackToTop />
 
       <AdminDashboard
         isOpen={isAdminOpen}
