@@ -76,7 +76,7 @@ export default function Featured() {
                     className="w-full h-full object-cover product-image-zoom"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                   <div
                     className="absolute inset-0 opacity-30 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-50"
                     style={{ background: `radial-gradient(circle at center, ${craft.accent}, transparent 70%)` }}
@@ -84,7 +84,7 @@ export default function Featured() {
 
                   {/* Number */}
                   <div className="absolute top-6 left-6 z-10">
-                    <span className="font-serif-lux text-5xl font-bold italic text-[var(--gold)]/60 group-hover:text-[var(--gold)] transition-colors duration-500">
+                    <span className="font-serif-lux text-5xl font-bold italic text-white/80 group-hover:text-[var(--gold)] transition-colors duration-500">
                       0{i + 1}
                     </span>
                   </div>
@@ -95,24 +95,24 @@ export default function Featured() {
                   </div>
 
                   {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 z-10 font-sans-lux">
-                    <div className="h-1 w-10 bg-[var(--gold)] mb-4 group-hover:w-20 transition-all duration-400 rounded-full" />
-                    <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--gold)] mb-2 font-bold font-sans-lux">
-                      {craft.tagline}
-                    </p>
-                    <h3 className="font-serif-lux text-3xl text-[var(--cream)] mb-3 font-semibold">
-                      {craft.name}
-                    </h3>
-                    <p className="font-sans-lux text-sm text-[var(--cream)]/80 leading-relaxed mb-6">
-                      {craft.description}
-                    </p>
-                    <div className="flex items-center justify-between pt-4 border-t border-[var(--gold)]/20">
-                      <span className="text-xs tracking-wider text-[var(--cream)]/60 font-semibold uppercase">{craft.pieces}</span>
-                      <span className="text-xs tracking-wider text-[var(--gold)] font-bold uppercase group-hover:translate-x-1 transition-transform duration-300">
-                        View Items →
-                      </span>
+                    <div className="absolute bottom-0 left-0 right-0 p-8 z-10 font-sans-lux">
+                      <div className="h-1 w-10 bg-[var(--gold)] mb-4 group-hover:w-20 transition-all duration-400 rounded-full" />
+                      <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--gold)] mb-2 font-bold font-sans-lux">
+                        {craft.tagline}
+                      </p>
+                      <h3 className="font-serif-lux text-3xl text-white mb-3 font-semibold">
+                        {craft.name}
+                      </h3>
+                      <p className="font-sans-lux text-sm text-zinc-200 leading-relaxed mb-6">
+                        {craft.description}
+                      </p>
+                      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                        <span className="text-xs tracking-wider text-white/80 font-semibold uppercase">{craft.pieces}</span>
+                        <span className="text-xs tracking-wider text-white font-bold uppercase group-hover:translate-x-1 transition-transform duration-300">
+                          View Items →
+                        </span>
+                      </div>
                     </div>
-                  </div>
                 </div>
               </div>
             );
