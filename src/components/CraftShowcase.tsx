@@ -1,4 +1,5 @@
-import { useScrollFade } from '../hooks/useScrollFade';
+import { useEffect, useRef } from 'react';
+
 const craftFeatures = [
   {
     emoji: '💎',
@@ -21,12 +22,34 @@ const craftFeatures = [
 ];
 
 export default function CraftShowcase() {
-  const headerRef = useScrollFade();
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      const elements = sectionRef.current.querySelectorAll('.scroll-fade-item');
+      elements.forEach((el) => observer.observe(el));
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="equipment-materials" className="py-24 px-6 relative">
+    <section id="equipment-materials" ref={sectionRef} className="py-24 px-6 bg-transparent relative">
       <div className="max-w-7xl mx-auto relative">
-        <div ref={headerRef} className="scroll-fade text-center mb-20">
+
+        {/* Section Header */}
+        <div className="scroll-fade-item opacity-0 translate-y-8 transition-all duration-700 ease-out text-center mb-20">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
             <span className="text-sm tracking-[0.2em] uppercase text-[var(--primary)] font-sans-lux font-bold">
@@ -42,45 +65,49 @@ export default function CraftShowcase() {
           </p>
         </div>
 
+        {/* Features Container Panel */}
         <div className="max-w-4xl mx-auto mb-16">
           <div className="space-y-6">
-            {craftFeatures.map((craft, i) => {
-              const ref = useScrollFade();
-              return (
-                <div
-                  key={craft.title}
-                  ref={ref}
-                  className="scroll-fade bg-white p-8 rounded-2xl shadow-sm border border-zinc-100 hover:border-[var(--gold)]/40 transition-all duration-500 group"
-                  style={{ transitionDelay: `${i * 100}ms` }}
-                >
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 rounded-2xl border border-zinc-200 flex items-center justify-center text-2xl flex-shrink-0 bg-zinc-50 group-hover:scale-110 group-hover:border-[var(--gold)]/40 transition-all duration-400 shadow-sm">
-                      {craft.emoji}
-                    </div>
-                    <div className="flex-1 font-sans-lux">
-                      <h3 className="font-serif-lux text-2xl md:text-3xl text-zinc-900 mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
-                        {craft.title}
-                      </h3>
-                      <p className="text-zinc-600 text-sm md:text-base leading-relaxed mb-6 font-normal">
-                        {craft.desc}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {craft.stats.map((stat) => (
-                          <span
-                            key={stat}
-                            className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800"
-                          >
-                            {stat}
-                          </span>
-                        ))}
-                      </div>
+            {craftFeatures.map((craft, i) => (
+              <div
+                key={craft.title}
+                className="scroll-fade-item opacity-0 translate-y-8 transition-all duration-700 ease-out bg-white p-8 rounded-2xl shadow-md border border-zinc-100 hover:border-[var(--gold)]/40 transition-all duration-500 group"
+                style={{ transitionDelay: `${i * 150}ms` }}
+              >
+                <div className="flex items-start gap-6">
+                  {/* Left Icon Panel */}
+                  <div className="w-14 h-14 rounded-2xl border border-zinc-200 flex items-center justify-center text-2xl flex-shrink-0 bg-zinc-50 group-hover:scale-110 group-hover:border-[var(--gold)]/40 transition-all duration-400 shadow-sm">
+                    {craft.emoji}
+                  </div>
+
+                  {/* Right Text Panel */}
+                  <div className="flex-1 font-sans-lux">
+                    <h3 className="font-serif-lux text-2xl md:text-3xl text-zinc-900 mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
+                      {craft.title}
+                    </h3>
+                    <p className="text-zinc-600 text-sm md:text-base leading-relaxed mb-6 font-normal">
+                      {craft.desc}
+                    </p>
+
+                    {/* High-Contrast Light Green Badges */}
+                    <div className="flex flex-wrap gap-2">
+                      {craft.stats.map((stat) => (
+                        <span
+                          key={stat}
+                          className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100/50"
+                        >
+                          {stat}
+                        </span>
+                      ))}
                     </div>
                   </div>
+
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
+
       </div>
     </section>
   );
