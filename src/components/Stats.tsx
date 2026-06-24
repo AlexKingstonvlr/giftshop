@@ -56,7 +56,7 @@ export default function Stats() {
     <section className="py-20 px-6 border-y border-[var(--gold)]/10 bg-[var(--charcoal)]/60">
       <div className="max-w-6xl mx-auto">
         <div ref={headerRef} className="scroll-fade text-center mb-12">
-          <span className="text-xs tracking-[0.3em] uppercase text-[var(--gold)] font-sans-lux font-bold">
+          <span className="text-sm tracking-[0.3em] uppercase text-[var(--gold)] font-sans-lux font-bold">
             Our Experience in Numbers
           </span>
         </div>

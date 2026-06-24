@@ -42,7 +42,7 @@ export default function Process() {
         <div ref={headerRef} className="scroll-fade text-center mb-20">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
-            <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] font-sans-lux font-bold">
+            <span className="text-sm tracking-[0.2em] uppercase text-[var(--gold)] font-sans-lux font-bold">
               How to Order
             </span>
             <div className="h-px w-12 bg-[var(--gold)]/60" />
@@ -74,7 +74,7 @@ export default function Process() {
                   <div className={`${isEven ? 'md:text-right md:pr-14' : 'md:order-2 md:text-left md:pl-14'} pl-16 sm:pl-18`}>
                     <div className={`flex items-center gap-3 mb-3 ${isEven ? 'md:justify-end' : ''}`}>
                       <span className="text-3xl p-3 bg-black/40 border border-white/10 rounded-2xl group-hover:border-[var(--gold)] transition-colors shadow-lg">{step.icon}</span>
-                      <span className="text-[11px] tracking-[0.25em] uppercase text-[var(--gold)] font-sans-lux font-bold bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+                      <span className="text-sm tracking-[0.25em] uppercase text-[var(--gold)] font-sans-lux font-bold bg-white/5 px-3 py-2 rounded-lg border border-white/10">
                         {step.time}
                       </span>
                     </div>

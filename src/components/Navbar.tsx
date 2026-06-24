@@ -10,11 +10,7 @@ const links = [
   { name: 'Contact', id: 'contact' },
 ];
 
-interface NavbarProps {
-  onOpenAdmin: () => void;
-}
-
-export default function Navbar({ onOpenAdmin }: NavbarProps) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -46,7 +42,7 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
   return (
     <nav
         className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'py-3 glass-lux border-b border-gold/10 shadow-2xl shadow-black/40 top-0' : 'py-5 top-0'
+          scrolled ? 'py-3 bg-[#f0ece6] border-b border-gold/10 shadow-2xl shadow-black/20 top-0' : 'py-5 top-0'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -65,10 +61,10 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
               <span className="font-serif-lux text-[var(--gold)] text-xl italic font-bold">G</span>
             </div>
             <div className="flex flex-col leading-tight">
-              <span className={`font-serif-lux text-xl md:text-2xl tracking-[0.15em] font-semibold ${!scrolled ? 'text-white' : 'text-[var(--cream)]'}`}>
+              <span className="font-serif-lux text-xl md:text-2xl tracking-[0.15em] font-semibold text-[var(--cream)]">
                 Gift Shop Vellore
               </span>
-              <span className={`text-[9px] tracking-[0.25em] uppercase mt-0.5 font-sans-lux font-medium ${!scrolled ? 'text-[var(--gold)]/80' : 'text-[var(--gold)]/80'}`}>
+              <span className={`text-[9px] tracking-[0.25em] uppercase mt-0.5 font-sans-lux font-medium ${!scrolled ? 'text-[var(--gold-dark)]' : 'text-[var(--gold)]/80'}`}>
                 Custom Made Gifts
               </span>
             </div>
@@ -81,7 +77,7 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
                 <a
                   href={`#${l.id}`}
                   onClick={(e) => handleNav(e, l.id)}
-                  className={`text-xs font-sans-lux tracking-[0.15em] uppercase ${!scrolled ? 'text-[var(--gold)]/90' : 'text-[var(--gold)]/90'} hover:text-[var(--gold)] transition-colors duration-300 relative group font-medium`}
+                  className={`text-xs font-sans-lux tracking-[0.15em] uppercase ${!scrolled ? 'text-[var(--gold-dark)]' : 'text-[var(--gold)]/90'} hover:text-[var(--gold)] transition-colors duration-300 relative group font-medium`}
                 >
                   {l.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-[var(--gold)] group-hover:w-full transition-all duration-300" />
@@ -101,27 +97,27 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
               Testimonial
             </button>
 
-            <button
-              onClick={onOpenAdmin}
-              className={`w-10 h-10 rounded-lg border ${!scrolled ? 'border-white/20 bg-white/10 text-white/80' : 'border-[var(--border)]/50 bg-black/5 text-[var(--cream)]/70'} hover:border-[var(--gold)]/40 hover:text-[var(--gold)] transition-all`}
+            <Link
+              to="/admin"
+              className={`w-10 h-10 rounded-lg border flex items-center justify-center ${!scrolled ? 'border-white/20 bg-white/10 text-[var(--cream)]/80' : 'border-[var(--border)]/50 bg-black/5 text-[var(--cream)]/70'} hover:border-[var(--gold)]/40 hover:text-[var(--gold)] transition-all`}
               title="Admin Login"
               aria-label="Admin Login"
             >
               <Lock size={15} />
-            </button>
+            </Link>
           </div>
 
           {/* Mobile toggle */}
           <div className="lg:hidden flex items-center gap-2">
-            <button
-              onClick={onOpenAdmin}
+            <Link
+              to="/admin"
               className="w-9 h-9 rounded-lg border border-[var(--border)]/50 bg-black/5 flex items-center justify-center text-[var(--cream)]/70"
               aria-label="Admin Login"
             >
               <Lock size={14} />
-            </button>
+            </Link>
             <button
-              className={`p-1 ${!scrolled ? 'text-white' : 'text-[var(--cream)]'}`}
+              className="p-1 text-[var(--cream)]"
               onClick={() => setOpen(!open)}
               aria-label="Toggle menu"
             >
@@ -136,7 +132,7 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
             open ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="glass-lux border-t border-[var(--gold)]/10 px-6 py-6 flex flex-col gap-5">
+          <div className="bg-[#f0ece6] border-t border-[var(--gold)]/10 px-6 py-6 flex flex-col gap-5 shadow-xl">
             {links.map((l) => (
               <a
                 key={l.name}

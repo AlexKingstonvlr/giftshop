@@ -123,7 +123,7 @@ export default function CustomOrder() {
         <div ref={headerRef} className="scroll-fade text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
-            <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] font-sans-lux font-bold">
+            <span className="text-sm tracking-[0.2em] uppercase text-[var(--gold)] font-sans-lux font-bold">
               Start Your Order Here
             </span>
             <div className="h-px w-12 bg-[var(--gold)]/60" />

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Preloader from './components/Preloader';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { SiteContentProvider } from './context/SiteContentContext';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -9,15 +9,16 @@ import FAQ from './pages/FAQ';
 import RefundPolicy from './pages/RefundPolicy';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import Admin from './pages/Admin';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
-import AdminDashboard from './components/AdminDashboard';
 import ParticleBackground from './components/ParticleBackground';
 import { initialProducts, initialTestimonials, type Product, type TestimonialItem } from './data/products';
 import { CheckCircle, X } from 'lucide-react';
 
 export default function App() {
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const location = useLocation();
+  const isAdmin = location.pathname === '/admin';
   const [toast, setToast] = useState<{ message: string; type: 'product' | 'testimonial' } | null>(null);
   
   // State synchronized with localStorage
@@ -56,12 +57,56 @@ export default function App() {
     setTimeout(() => setToast(null), 7000);
   };
 
+  const handleUpdateProduct = (id: number, updated: Product) => {
+    const updatedList = products.map(p => p.id === id ? updated : p);
+    setProducts(updatedList);
+    localStorage.setItem('vellore_products', JSON.stringify(updatedList));
+    setToast({
+      message: `Product "${updated.name}" updated successfully!`,
+      type: 'product'
+    });
+    setTimeout(() => setToast(null), 7000);
+  };
+
+  const handleDeleteProduct = (id: number) => {
+    const updatedList = products.filter(p => p.id !== id);
+    setProducts(updatedList);
+    localStorage.setItem('vellore_products', JSON.stringify(updatedList));
+    setToast({
+      message: `Product deleted successfully.`,
+      type: 'product'
+    });
+    setTimeout(() => setToast(null), 7000);
+  };
+
   const handleAddTestimonial = (newTestimonial: TestimonialItem) => {
     const updated = [newTestimonial, ...testimonials];
     setTestimonials(updated);
     localStorage.setItem('vellore_testimonials', JSON.stringify(updated));
     setToast({
       message: `New Testimonial by "${newTestimonial.name}" successfully published to the live website!`,
+      type: 'testimonial'
+    });
+    setTimeout(() => setToast(null), 7000);
+  };
+
+  const handleUpdateTestimonial = (id: string, updated: TestimonialItem) => {
+    const updatedList = testimonials.map(t => t.id === id ? updated : t);
+    setTestimonials(updatedList);
+    localStorage.setItem('vellore_testimonials', JSON.stringify(updatedList));
+    setToast({
+      message: `Testimonial by "${updated.name}" updated successfully!`,
+      type: 'testimonial'
+    });
+    setTimeout(() => setToast(null), 7000);
+  };
+
+  const handleDeleteTestimonial = (id: string) => {
+    const updatedList = testimonials.filter(t => t.id !== id);
+    setTestimonials(updatedList);
+    localStorage.setItem('vellore_testimonials', JSON.stringify(updatedList));
+    setToast({
+      message: `Testimonial deleted successfully.`,
       type: 'testimonial'
     });
     setTimeout(() => setToast(null), 7000);
@@ -77,12 +122,12 @@ export default function App() {
   return (
     <SiteContentProvider>
       <div className="relative min-h-screen text-[var(--cream)] overflow-x-hidden">
-      <ParticleBackground />
-      <Preloader />
-      <Navbar onOpenAdmin={() => setIsAdminOpen(true)} />
+      {!isAdmin && <ParticleBackground />}
+      {!isAdmin && <Preloader />}
+      {!isAdmin && <Navbar />}
       
       {/* Floating Global Success Notification Toast */}
-      {toast && (
+      {!isAdmin && toast && (
         <div className="fixed top-24 right-6 z-[200] max-w-md bg-white border-2 border-emerald-500/80 rounded-2xl p-5 shadow-[0_0_40px_rgba(16,185,129,0.3)] animate-fade-in-up flex items-start gap-4 backdrop-blur-xl">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center flex-shrink-0 mt-0.5">
             <CheckCircle size={22} className="text-emerald-400" />
@@ -119,19 +164,24 @@ export default function App() {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/admin" element={
+            <Admin
+              products={products}
+              testimonials={testimonials}
+              onAddProduct={handleAddProduct}
+              onUpdateProduct={handleUpdateProduct}
+              onDeleteProduct={handleDeleteProduct}
+              onAddTestimonial={handleAddTestimonial}
+              onUpdateTestimonial={handleUpdateTestimonial}
+              onDeleteTestimonial={handleDeleteTestimonial}
+            />
+          } />
         </Routes>
       </main>
 
-      <Footer onOpenAdmin={() => setIsAdminOpen(true)} />
+      {!isAdmin && <Footer />}
 
-      <BackToTop />
-
-      <AdminDashboard
-        isOpen={isAdminOpen}
-        onClose={() => setIsAdminOpen(false)}
-        onAddProduct={handleAddProduct}
-        onAddTestimonial={handleAddTestimonial}
-      />
+      {!isAdmin && <BackToTop />}
     </div>
     </SiteContentProvider>
   );

@@ -12,11 +12,7 @@ const footerLinks: Record<string, FooterLink[]> = {
   Support: [{ name: 'FAQs', path: '/faqs' }, { name: 'Return/Refund Policy', path: '/refund-policy' }, { name: 'How to Order', id: 'how-it-works' }],
 };
 
-interface FooterProps {
-  onOpenAdmin: () => void;
-}
-
-export default function Footer({ onOpenAdmin }: FooterProps) {
+export default function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -150,12 +146,12 @@ export default function Footer({ onOpenAdmin }: FooterProps) {
           <p>© {new Date().getFullYear()} Gift Shop Vellore. All custom gifts made with pride.</p>
           
           <div className="flex items-center gap-6">
-            <button
-              onClick={onOpenAdmin}
+            <Link
+              to="/admin"
               className="flex items-center gap-1.5 text-[var(--gold)] hover:text-[var(--gold-light)] font-bold transition-colors bg-white/5 px-4 py-2 rounded-xl border border-[var(--gold)]/30 shadow-md"
             >
               <Lock size={13} /> Admin Login
-            </button>
+            </Link>
             <Link
               to="/privacy-policy"
               onClick={() => window.scrollTo(0, 0)}

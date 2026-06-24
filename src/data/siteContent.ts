@@ -3,7 +3,7 @@ export const defaultSiteContent = {
     title: 'Beautiful gifts,<br />\n<span class="text-gold-gradient italic font-normal">custom made</span> for you.',
     subtitle: "Precision crafted. Hand finished. Made just for you.",
     description: "We create luxury custom nameplates, personalized lamps, and unique 3D printed gifts using the highest quality epoxy resin, wood, and acrylic.",
-    image: "/images/hero-resin-table.jpg"
+    image: "/images/Gemini_Generated_Image_orrjx2orrjx2orrj.png"
   },
   about: {
     title: "About Gift Shop Vellore",
