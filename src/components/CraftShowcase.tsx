@@ -1,5 +1,4 @@
 import { useScrollFade } from '../hooks/useScrollFade';
-
 const craftFeatures = [
   {
     emoji: '💎',
@@ -52,27 +51,27 @@ export default function CraftShowcase() {
               return (
                 <div
                   key={craft.title}
-                  className="bg-zinc-900/90 p-8 rounded-2xl shadow-xl border border-zinc-800/80 hover:border-[var(--gold)]/40 transition-all duration-500 group flex flex-col md:flex-row items-start gap-6"
+                  className="bg-white p-8 rounded-2xl shadow-sm border border-zinc-100 hover:border-[var(--gold)]/40 transition-all duration-500 group flex flex-col md:flex-row items-start gap-6"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   {/* Left Icon Container */}
-                  <div className="w-14 h-14 rounded-2xl border border-zinc-700 flex items-center justify-center text-2xl flex-shrink-0 bg-zinc-800 group-hover:scale-110 group-hover:border-[var(--gold)]/40 transition-all duration-400 shadow-sm">
+                  <div className="w-14 h-14 rounded-2xl border border-zinc-200 flex items-center justify-center text-2xl flex-shrink-0 bg-zinc-50 group-hover:scale-110 group-hover:border-[var(--gold)]/40 transition-all duration-400 shadow-sm">
                     {craft.emoji}
                   </div>
 
                   {/* Right Content Area */}
                   <div className="flex-1 font-sans-lux">
-                    <h3 className="font-serif-lux text-2xl md:text-3xl text-white mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
+                    <h3 className="font-serif-lux text-2xl md:text-3xl text-zinc-900 mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
                       {craft.title}
                     </h3>
-                    <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-6 font-normal">
+                    <p className="text-zinc-600 text-sm md:text-base leading-relaxed mb-6 font-normal">
                       {craft.desc}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {craft.stats.map((stat) => (
                         <span
                           key={stat}
-                          className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-zinc-800 text-[var(--gold)] border border-zinc-700"
+                          className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-100/40"
                         >
                           {stat}
                         </span>
