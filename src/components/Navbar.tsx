@@ -44,43 +44,9 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
   };
 
   return (
-    <>
-      {/* Top contact bar */}
-      <div className={`fixed top-0 left-0 right-0 z-[60] bg-[var(--obsidian)]/95 backdrop-blur-md border-b border-[var(--gold)]/10 hidden lg:block transition-all duration-500 ${scrolled ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}`}>
-        <div className="max-w-7xl mx-auto px-6 py-1.5 flex items-center justify-end gap-6 text-[11px]">
-          <a
-            href="tel:9514585959"
-            className="flex items-center gap-1.5 text-[var(--cream)]/60 hover:text-[var(--gold)] transition-colors"
-          >
-            <Phone size={11} className="text-[var(--gold)]" />
-            9514585959
-          </a>
-          <a
-            href="mailto:giftshop.vlr@gmail.com"
-            className="flex items-center gap-1.5 text-[var(--cream)]/60 hover:text-[var(--gold)] transition-colors"
-          >
-            <Mail size={11} className="text-[var(--gold)]" />
-            giftshop.vlr@gmail.com
-          </a>
-          <a
-            href="https://www.instagram.com/giftshop.vlr?igsh=MWIxMXk5dWdtbGs2eg=="
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[var(--cream)]/60 hover:text-[var(--gold)] transition-colors"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[11px] h-[11px] text-[var(--gold)]">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-            </svg>
-            @giftshop.vlr
-          </a>
-        </div>
-      </div>
-
-      <nav
+    <nav
         className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'py-3 glass-lux border-b border-gold/10 shadow-2xl shadow-black/40 top-0' : 'py-5 bg-gradient-to-b from-black/70 to-transparent top-[33px]'
+          scrolled ? 'py-3 glass-lux border-b border-gold/10 shadow-2xl shadow-black/40 top-0' : 'py-5 top-0'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -99,10 +65,10 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
               <span className="font-serif-lux text-[var(--gold)] text-xl italic font-bold">G</span>
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="font-serif-lux text-xl md:text-2xl tracking-[0.15em] text-[var(--cream)] font-semibold">
+              <span className={`font-serif-lux text-xl md:text-2xl tracking-[0.15em] font-semibold ${!scrolled ? 'text-white' : 'text-[var(--cream)]'}`}>
                 Gift Shop Vellore
               </span>
-              <span className="text-[9px] tracking-[0.25em] text-[var(--gold)]/80 uppercase mt-0.5 font-sans-lux font-medium">
+              <span className={`text-[9px] tracking-[0.25em] uppercase mt-0.5 font-sans-lux font-medium ${!scrolled ? 'text-[var(--gold)]/80' : 'text-[var(--gold)]/80'}`}>
                 Custom Made Gifts
               </span>
             </div>
@@ -115,7 +81,7 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
                 <a
                   href={`#${l.id}`}
                   onClick={(e) => handleNav(e, l.id)}
-                  className="text-xs font-sans-lux tracking-[0.15em] uppercase text-[var(--cream)]/80 hover:text-[var(--gold)] transition-colors duration-300 relative group font-medium"
+                  className={`text-xs font-sans-lux tracking-[0.15em] uppercase ${!scrolled ? 'text-[var(--gold)]/90' : 'text-[var(--gold)]/90'} hover:text-[var(--gold)] transition-colors duration-300 relative group font-medium`}
                 >
                   {l.name}
                   <span className="absolute -bottom-1 left-0 w-0 h-px bg-[var(--gold)] group-hover:w-full transition-all duration-300" />
@@ -137,7 +103,7 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
 
             <button
               onClick={onOpenAdmin}
-              className="w-10 h-10 rounded-lg border border-white/10 hover:border-[var(--gold)]/40 bg-white/5 flex items-center justify-center text-white/70 hover:text-[var(--gold)] transition-all"
+              className={`w-10 h-10 rounded-lg border ${!scrolled ? 'border-white/20 bg-white/10 text-white/80' : 'border-[var(--border)]/50 bg-black/5 text-[var(--cream)]/70'} hover:border-[var(--gold)]/40 hover:text-[var(--gold)] transition-all`}
               title="Admin Login"
               aria-label="Admin Login"
             >
@@ -149,13 +115,13 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={onOpenAdmin}
-              className="w-9 h-9 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-white/70"
+              className="w-9 h-9 rounded-lg border border-[var(--border)]/50 bg-black/5 flex items-center justify-center text-[var(--cream)]/70"
               aria-label="Admin Login"
             >
               <Lock size={14} />
             </button>
             <button
-              className="text-[var(--cream)] p-1"
+              className={`p-1 ${!scrolled ? 'text-white' : 'text-[var(--cream)]'}`}
               onClick={() => setOpen(!open)}
               aria-label="Toggle menu"
             >
@@ -176,7 +142,7 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
                 key={l.name}
                 href={`#${l.id}`}
                 onClick={(e) => handleNav(e, l.id)}
-                className="text-[var(--cream)]/90 text-sm uppercase tracking-[0.15em] font-sans-lux font-medium"
+                className="text-[var(--cream)] text-sm uppercase tracking-[0.15em] font-sans-lux font-medium"
               >
                 {l.name}
               </a>
@@ -221,6 +187,5 @@ export default function Navbar({ onOpenAdmin }: NavbarProps) {
           </div>
         </div>
       </nav>
-    </>
   );
 }

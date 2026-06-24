@@ -1,4 +1,5 @@
 import { Lock, Phone, MessageCircle, MapPin } from 'lucide-react';
+import { STORE_MAPS_URL } from '../constants';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 type AnchorLink = { name: string; id: string };
@@ -128,7 +129,7 @@ export default function Footer({ onOpenAdmin }: FooterProps) {
               </li>
               <li>
                 <a
-                  href="https://maps.app.goo.gl/fn6puQwjaphdSqrb9"
+                  href={STORE_MAPS_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-2.5 text-[var(--cream)]/70 hover:text-[var(--gold)] text-sm font-sans-lux transition-colors duration-300 font-medium"

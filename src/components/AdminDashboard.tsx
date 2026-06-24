@@ -174,7 +174,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
           <h4 className="text-emerald-300 font-bold text-sm uppercase tracking-wider mb-1">
             {published.type === 'product' ? 'Product Published Successfully!' : published.type === 'testimonial' ? 'Testimonial Published Successfully!' : 'Content Updated!'}
           </h4>
-          <p className="text-[var(--cream)]/90 text-sm leading-relaxed mb-3 font-medium">
+          <p className="text-white/90 text-sm leading-relaxed mb-3 font-medium">
             "{published.name}" is now live on the website.
           </p>
           <div className="flex flex-wrap gap-2">
@@ -212,10 +212,10 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
             <div className="w-16 h-16 rounded-full border border-[var(--gold)]/40 bg-black/40 flex items-center justify-center mx-auto mb-6">
               <Lock size={28} className="text-[var(--gold)]" />
             </div>
-            <h2 className="font-serif-lux text-3xl text-[var(--cream)] mb-2 font-light">
+            <h2 className="font-serif-lux text-3xl text-white mb-2 font-light">
               Business Owner Login
             </h2>
-            <p className="text-xs text-[var(--cream)]/60 mb-8 font-sans-lux">
+            <p className="text-xs text-white/60 mb-8 font-sans-lux">
               Enter your admin password to manage products and testimonials. (Hint: enter <span className="text-[var(--gold)]">admin123</span>)
             </p>
 
@@ -227,7 +227,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter Password"
                   required
-                  className="w-full bg-black/50 border border-[var(--gold)]/30 rounded-xl px-4 py-3.5 text-center text-[var(--cream)] placeholder-[var(--cream)]/30 text-sm focus:outline-none focus:border-[var(--gold)] transition-colors font-sans-lux"
+                  className="w-full bg-black/50 border border-[var(--gold)]/30 rounded-xl px-4 py-3.5 text-center text-white placeholder-white/30 text-sm focus:outline-none focus:border-[var(--gold)] transition-colors font-sans-lux"
                 />
                 {loginError && (
                   <p className="text-red-400 text-xs mt-2 font-sans-lux">
@@ -246,10 +246,10 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
         ) : (
           <div>
             <div className="text-center mb-8 border-b border-[var(--gold)]/20 pb-6">
-              <h2 className="font-serif-lux text-3xl text-[var(--cream)] mb-1 font-light">
+              <h2 className="font-serif-lux text-3xl text-white mb-1 font-light">
                 Gift Shop Vellore Admin
               </h2>
-              <p className="text-xs text-[var(--cream)]/60 font-sans-lux">
+              <p className="text-xs text-white/60 font-sans-lux">
                 Upload new products or customer testimonials instantly.
               </p>
             </div>
@@ -260,7 +260,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                 onClick={() => setActiveTab('product')}
                 className={`flex-1 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-sans-lux transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'product'
-                    ? 'bg-[var(--gold)] text-[var(--obsidian)] font-bold shadow-lg shadow-[var(--gold)]/20'
+                    ? 'bg-[var(--gold)] text-[#1a1a24] font-bold shadow-lg shadow-[var(--gold)]/20'
                     : 'bg-white/5 border border-white/10 text-white/70 hover:bg-white/10'
                 }`}
               >
@@ -270,7 +270,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                 onClick={() => setActiveTab('testimonial')}
                 className={`flex-1 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-sans-lux transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'testimonial'
-                    ? 'bg-[var(--gold)] text-[var(--obsidian)] font-bold shadow-lg shadow-[var(--gold)]/20'
+                    ? 'bg-[var(--gold)] text-[#1a1a24] font-bold shadow-lg shadow-[var(--gold)]/20'
                     : 'bg-white/5 border border-white/10 text-white/70 hover:bg-white/10'
                 }`}
               >
@@ -280,7 +280,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                 onClick={() => { setActiveTab('content'); setJsonContent(JSON.stringify(content, null, 2)); }}
                 className={`flex-1 py-3 px-4 rounded-xl text-xs uppercase tracking-wider font-sans-lux transition-all flex items-center justify-center gap-2 ${
                   activeTab === 'content'
-                    ? 'bg-[var(--gold)] text-[var(--obsidian)] font-bold shadow-lg shadow-[var(--gold)]/20'
+                    ? 'bg-[var(--gold)] text-[#1a1a24] font-bold shadow-lg shadow-[var(--gold)]/20'
                     : 'bg-white/5 border border-white/10 text-white/70 hover:bg-white/10'
                 }`}
               >
@@ -294,21 +294,21 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
               <form onSubmit={handleProductSubmit} className="space-y-5 font-sans-lux">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Product Name</label>
+                    <label className="text-xs text-white/70 font-semibold mb-1 block">Product Name</label>
                     <input
                       type="text"
                       placeholder="e.g. Glowing Galaxy Ring Box"
                       value={prodName}
                       onChange={(e) => setProdName(e.target.value)}
-                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)]"
+                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Product Category</label>
+                    <label className="text-xs text-white/70 font-semibold mb-1 block">Product Category</label>
                     <select
                       value={prodCategory}
                       onChange={(e) => setProdCategory(e.target.value as Category)}
-                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] text-sm focus:outline-none focus:border-[var(--gold)]"
+                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[var(--gold)]"
                     >
                       <option value="Epoxy Resin">Epoxy Resin</option>
                       <option value="Laser Cut">Laser Cut</option>
@@ -318,63 +318,63 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                 </div>
 
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Short Description</label>
+                  <label className="text-xs text-white/70 font-semibold mb-1 block">Short Description</label>
                   <textarea
                     required
                     rows={3}
                     placeholder="Describe the custom product in simple English..."
                     value={prodDesc}
                     onChange={(e) => setProdDesc(e.target.value)}
-                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)] resize-none"
+                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)] resize-none"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Material</label>
+                    <label className="text-xs text-white/70 font-semibold mb-1 block">Material</label>
                     <input
                       type="text"
                       placeholder="e.g. Wood and Resin"
                       value={prodMaterial}
                       onChange={(e) => setProdMaterial(e.target.value)}
-                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)]"
+                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Size</label>
+                    <label className="text-xs text-white/70 font-semibold mb-1 block">Size</label>
                     <input
                       type="text"
                       placeholder="e.g. 20 x 15 cm"
                       value={prodSize}
                       onChange={(e) => setProdSize(e.target.value)}
-                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)]"
+                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)]"
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Time to Deliver</label>
+                    <label className="text-xs text-white/70 font-semibold mb-1 block">Time to Deliver</label>
                     <input
                       type="text"
                       placeholder="e.g. 5 days"
                       value={prodTime}
                       onChange={(e) => setProdTime(e.target.value)}
-                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)]"
+                      className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Approximate Price</label>
+                  <label className="text-xs text-white/70 font-semibold mb-1 block">Approximate Price</label>
                   <input
                     type="text"
                     placeholder="e.g. ₹4,500"
                     value={prodPrice}
                     onChange={(e) => setProdPrice(e.target.value)}
-                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)]"
+                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-2 block">Upload Product Image</label>
+                  <label className="text-xs text-white/70 font-semibold mb-2 block">Upload Product Image</label>
                   <label className="flex flex-col items-center justify-center border-2 border-dashed border-white/20 rounded-xl p-6 hover:border-[var(--gold)] transition-colors cursor-pointer bg-black/20">
                     {prodImage ? (
                       <div className="flex items-center gap-4 w-full">
@@ -402,7 +402,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                   disabled={submitting}
                   className={`w-full py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-semibold mt-4 transition-all ${
                     submitting
-                      ? 'bg-[var(--gold)]/50 text-[var(--obsidian)] cursor-not-allowed'
+                      ? 'bg-[var(--gold)]/50 text-[#1a1a24] cursor-not-allowed'
                       : 'btn-gold'
                   }`}
                 >
@@ -412,31 +412,31 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
             ) : activeTab === 'testimonial' ? (
               <form onSubmit={handleTestimonialSubmit} className="space-y-5 font-sans-lux">
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Customer Name</label>
+                  <label className="text-xs text-white/70 font-semibold mb-1 block">Customer Name</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Ramesh Kumar"
                     value={testimName}
                     onChange={(e) => setTestimName(e.target.value)}
-                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)]"
+                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)]"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-1 block">Small Description / Review</label>
+                  <label className="text-xs text-white/70 font-semibold mb-1 block">Small Description / Review</label>
                   <textarea
                     required
                     rows={4}
                     placeholder="e.g. I bought a custom nameplate and it looks very beautiful on my door. Excellent customer service!"
                     value={testimQuote}
                     onChange={(e) => setTestimQuote(e.target.value)}
-                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)] resize-none"
+                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)] resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-2 block">Upload Customer or Product Image</label>
+                  <label className="text-xs text-white/70 font-semibold mb-2 block">Upload Customer or Product Image</label>
                   <label className="flex flex-col items-center justify-center border-2 border-dashed border-white/20 rounded-xl p-6 hover:border-[var(--gold)] transition-colors cursor-pointer bg-black/20">
                     {testimImage ? (
                       <div className="flex items-center gap-4 w-full">
@@ -464,7 +464,7 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
                   disabled={submitting}
                   className={`w-full py-4 rounded-xl text-xs uppercase tracking-[0.2em] font-semibold mt-4 transition-all ${
                     submitting
-                      ? 'bg-[var(--gold)]/50 text-[var(--obsidian)] cursor-not-allowed'
+                      ? 'bg-[var(--gold)]/50 text-[#1a1a24] cursor-not-allowed'
                       : 'btn-gold'
                   }`}
                 >
@@ -474,14 +474,14 @@ export default function AdminDashboard({ isOpen, onClose, onAddProduct, onAddTes
             ) : (
               <form onSubmit={handleContentSubmit} className="space-y-5 font-sans-lux">
                 <div>
-                  <label className="text-xs text-[var(--cream)]/70 font-semibold mb-2 block">Site Content Data (JSON)</label>
-                  <p className="text-xs text-[var(--cream)]/50 mb-3">You can edit any text here. Please ensure it remains valid JSON.</p>
+                  <label className="text-xs text-white/70 font-semibold mb-2 block">Site Content Data (JSON)</label>
+                  <p className="text-xs text-white/50 mb-3">You can edit any text here. Please ensure it remains valid JSON.</p>
                   <textarea
                     required
                     rows={15}
                     value={jsonContent}
                     onChange={(e) => setJsonContent(e.target.value)}
-                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-[var(--cream)] placeholder-[var(--cream)]/25 text-sm focus:outline-none focus:border-[var(--gold)] font-mono"
+                    className="w-full bg-black/40 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 text-sm focus:outline-none focus:border-[var(--gold)] font-mono"
                   />
                 </div>
                 <button

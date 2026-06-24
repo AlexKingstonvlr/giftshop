@@ -12,7 +12,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: TestimonialItem;
   return (
     <div
       ref={ref}
-      className="scroll-fade glass-lux-light p-8 md:p-10 border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 relative group rounded-2xl shadow-xl bg-black/40 flex flex-col justify-between"
+      className="scroll-fade glass-lux-light p-8 md:p-10 border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 relative group rounded-2xl shadow-xl flex flex-col justify-between"
       style={{ transitionDelay: `${(index % 4) * 100}ms` }}
     >
       <Quote size={36} className="text-[var(--gold)]/20 absolute top-6 right-6 group-hover:text-[var(--gold)]/50 transition-colors duration-500" />

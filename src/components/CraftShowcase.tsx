@@ -32,7 +32,7 @@ export default function CraftShowcase() {
         <div ref={headerRef} className="scroll-fade text-center mb-20">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="h-px w-12 bg-[var(--gold)]/60" />
-            <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] font-sans-lux font-bold">
+            <span className="text-xs tracking-[0.2em] uppercase text-[var(--primary)] font-sans-lux font-bold">
               Our Equipment & Materials
             </span>
             <div className="h-px w-12 bg-[var(--gold)]/60" />
@@ -53,7 +53,7 @@ export default function CraftShowcase() {
                 <div
                   key={craft.title}
                   ref={ref}
-                  className="scroll-fade glass-lux-light p-8 border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 group rounded-2xl shadow-xl bg-black/30"
+                  className="scroll-fade glass-lux-light p-8 border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 group rounded-2xl shadow-xl"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div className="flex items-start gap-6">
@@ -71,7 +71,7 @@ export default function CraftShowcase() {
                         {craft.stats.map((stat) => (
                           <span
                             key={stat}
-                            className="text-[11px] tracking-[0.15em] uppercase text-[var(--gold)] border border-[var(--gold)]/30 bg-black/40 px-3.5 py-1.5 rounded-lg font-bold"
+                            className="text-[11px] tracking-[0.15em] uppercase text-white bg-[var(--primary)] px-3.5 py-1.5 rounded-lg font-bold"
                           >
                             {stat}
                           </span>

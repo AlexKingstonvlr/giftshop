@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Preloader from './components/Preloader';
 import { Routes, Route } from 'react-router-dom';
@@ -11,50 +11,9 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Footer from './components/Footer';
 import AdminDashboard from './components/AdminDashboard';
+import ParticleBackground from './components/ParticleBackground';
 import { initialProducts, initialTestimonials, type Product, type TestimonialItem } from './data/products';
 import { CheckCircle, X } from 'lucide-react';
-
-function GoldGlow() {
-  const cursorRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let raf: number;
-    let mouseX = -300, mouseY = -300;
-    let curX = -300, curY = -300;
-
-    const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-    window.addEventListener('mousemove', onMove, { passive: true });
-
-    const animate = () => {
-      curX += (mouseX - curX) * 0.06;
-      curY += (mouseY - curY) * 0.06;
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${curX - 250}px, ${curY - 250}px)`;
-      }
-      raf = requestAnimationFrame(animate);
-    };
-    animate();
-
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={cursorRef}
-      className="pointer-events-none fixed top-0 left-0 w-[500px] h-[500px] rounded-full z-0 hidden md:block"
-      style={{
-        background: 'radial-gradient(circle, rgba(201, 169, 97, 0.06) 0%, transparent 60%)',
-        willChange: 'transform',
-      }}
-    />
-  );
-}
 
 export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -116,14 +75,14 @@ export default function App() {
 
   return (
     <SiteContentProvider>
-      <div className="relative min-h-screen bg-[var(--obsidian)] text-[var(--cream)] overflow-x-hidden">
+      <div className="relative min-h-screen text-[var(--cream)] overflow-x-hidden">
+      <ParticleBackground />
       <Preloader />
-      <GoldGlow />
       <Navbar onOpenAdmin={() => setIsAdminOpen(true)} />
       
       {/* Floating Global Success Notification Toast */}
       {toast && (
-        <div className="fixed top-24 right-6 z-[200] max-w-md bg-[#14100e] border-2 border-emerald-500/80 rounded-2xl p-5 shadow-[0_0_40px_rgba(16,185,129,0.3)] animate-fade-in-up flex items-start gap-4 backdrop-blur-xl">
+        <div className="fixed top-24 right-6 z-[200] max-w-md bg-white border-2 border-emerald-500/80 rounded-2xl p-5 shadow-[0_0_40px_rgba(16,185,129,0.3)] animate-fade-in-up flex items-start gap-4 backdrop-blur-xl">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center flex-shrink-0 mt-0.5">
             <CheckCircle size={22} className="text-emerald-400" />
           </div>
@@ -143,7 +102,7 @@ export default function App() {
           </div>
           <button
             onClick={() => setToast(null)}
-            className="text-white/50 hover:text-white transition-colors p-1"
+            className="text-black/30 hover:text-black/60 transition-colors p-1"
             aria-label="Close notification"
           >
             <X size={18} />

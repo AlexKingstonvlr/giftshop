@@ -37,7 +37,7 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
         </div>
 
         <div className="p-8 md:p-10 flex flex-col justify-center font-sans-lux">
-          <span className="text-xs tracking-[0.2em] uppercase text-[var(--gold)] mb-2 font-bold font-sans-lux">
+          <span className="text-xs tracking-[0.2em] uppercase text-[var(--primary)] mb-2 font-bold font-sans-lux">
             {product.category}
           </span>
           <h3 className="font-serif-lux text-3xl md:text-4xl text-[var(--cream)] mb-4 font-semibold leading-tight">
@@ -47,26 +47,26 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
             {product.description}
           </p>
 
-          <div className="space-y-4 mb-8 pb-8 border-b border-[var(--gold)]/15 text-sm">
+          <div className="space-y-4 mb-8 pb-8 border-b border-[var(--border)] text-sm">
             {product.material && (
               <div className="flex items-center gap-3">
-                <Layers size={16} className="text-[var(--gold)] flex-shrink-0" />
+                <Layers size={16} className="text-[var(--primary)] flex-shrink-0" />
                 <span className="text-xs text-[var(--cream)]/60 uppercase tracking-wider min-w-[80px] font-semibold">Material</span>
-                <span className="text-white font-medium">{product.material}</span>
+                <span className="text-[var(--cream)] font-medium">{product.material}</span>
               </div>
             )}
             {product.dimensions && (
               <div className="flex items-center gap-3">
-                <Ruler size={16} className="text-[var(--gold)] flex-shrink-0" />
+                <Ruler size={16} className="text-[var(--primary)] flex-shrink-0" />
                 <span className="text-xs text-[var(--cream)]/60 uppercase tracking-wider min-w-[80px] font-semibold">Size</span>
-                <span className="text-white font-medium">{product.dimensions}</span>
+                <span className="text-[var(--cream)] font-medium">{product.dimensions}</span>
               </div>
             )}
             {product.leadTime && (
               <div className="flex items-center gap-3">
-                <Clock size={16} className="text-[var(--gold)] flex-shrink-0" />
+                <Clock size={16} className="text-[var(--primary)] flex-shrink-0" />
                 <span className="text-xs text-[var(--cream)]/60 uppercase tracking-wider min-w-[80px] font-semibold">Delivery</span>
-                <span className="text-white font-medium">{product.leadTime}</span>
+                <span className="text-[var(--cream)] font-medium">{product.leadTime}</span>
               </div>
             )}
           </div>
@@ -74,7 +74,7 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
           <div className="flex items-end justify-between mb-8">
             <div>
               <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--cream)]/50 mb-1 font-semibold">Approximate Price</p>
-              <p className="font-serif-lux text-4xl font-bold text-gold-static">{product.price}</p>
+              <p className="font-serif-lux text-4xl font-bold text-[var(--primary)]">{product.price}</p>
             </div>
           </div>
 

@@ -1,64 +1,115 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useScrollFade } from '../hooks/useScrollFade';
-import { Mail, Phone, MapPin, MessageCircle, Image as ImageIcon, X } from 'lucide-react';
+import { Mail, Phone, MapPin, MessageCircle } from 'lucide-react';
+import { STORE_MAPS_URL } from '../constants';
 
 const crafts = ['Epoxy Resin', 'Laser Cut Wood', '3D Printing', 'Mixed Material', 'Help me choose'];
 const budgets = ['Under ₹5,000', '₹5,000 – ₹15,000', '₹15,000 – ₹50,000', '₹50,000+'];
 
+type FormFields = {
+  name: string; phone: string; email: string; craft: string; budget: string; message: string;
+};
+type FormErrors = Partial<Record<keyof FormFields, string>>;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validate(form: FormFields): FormErrors {
+  const e: FormErrors = {};
+  const name = form.name.trim();
+  if (!name) e.name = 'Name is required';
+  else if (name.length < 2) e.name = 'Name must be at least 2 characters';
+  else if (/^[\d\s]+$/.test(name)) e.name = 'Please enter a valid name';
+
+  const phone = form.phone.replace(/\D/g, '');
+  if (!phone) e.phone = 'Phone number is required';
+  else if (phone.length !== 10) e.phone = 'Phone must be exactly 10 digits';
+  else if (!/^[6-9]/.test(phone)) e.phone = 'Phone must start with 6, 7, 8, or 9';
+
+  if (form.email && !EMAIL_RE.test(form.email)) e.email = 'Please enter a valid email address';
+
+  if (!form.craft) e.craft = 'Please select a craft category';
+  if (!form.budget) e.budget = 'Please select a budget range';
+
+  const msg = form.message.trim();
+  if (!msg) e.message = 'Please tell us about your gift idea';
+  else if (msg.length < 10) e.message = 'Please provide at least 10 characters';
+
+  return e;
+}
+
 export default function CustomOrder() {
   const headerRef = useScrollFade();
   const formRef = useScrollFade();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [form, setForm] = useState({
-    name: '',
-    phone: '',
-    craft: '',
-    budget: '',
-    message: '',
+  const [form, setForm] = useState<FormFields>({
+    name: '', phone: '', email: '', craft: '', budget: '', message: '',
   });
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [botField, setBotField] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const updateField = (name: keyof FormFields, value: string) => {
+    const next = { ...form, [name]: value };
+    setForm(next);
+    if (touched[name]) setErrors(validate(next));
+  };
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
-      reader.readAsDataURL(file);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      updateField('phone', value.replace(/\D/g, ''));
+    } else {
+      updateField(name as keyof FormFields, value);
     }
   };
 
-  const removeImage = () => {
-    setImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
+  const handleBlur = (name: keyof FormFields) => {
+    setTouched((t) => ({ ...t, [name]: true }));
+    setErrors(validate(form));
   };
+
+  const errorsList = validate(form);
+  const valid = Object.keys(errorsList).length === 0;
 
   const getEnquiryMessage = () => {
-    return `Hello Gift Shop Vellore,%0A%0AMy name is ${form.name || 'Customer'}.%0A%0AI am interested in ordering a custom gift.%0A%0A*Details:*%0A- Craft Category: ${form.craft || 'Not selected'}%0A- Budget: ${form.budget || 'Not selected'}%0A%0A*My Request:*%0A${form.message || 'Please contact me to discuss further.'}%0A%0AYou can reach me at: ${form.phone || 'Not provided'}%0A%0AThank you!`;
+    const contact = form.email || form.phone || 'Not provided';
+    return `Hello Gift Shop Vellore,%0A%0AMy name is ${form.name || 'Customer'}.%0A%0AI am interested in ordering a custom gift.%0A%0A*Details:*%0A- Craft Category: ${form.craft || 'Not selected'}%0A- Budget: ${form.budget || 'Not selected'}%0A%0A*My Request:*%0A${form.message || 'Please contact me to discuss further.'}%0A%0AYou can reach me at: ${contact}%0A%0AThank you!`;
   };
 
-  const getEmailMessage = () => {
-    return `Hello Gift Shop Vellore,\n\nMy name is ${form.name || 'Customer'}.\n\nI am interested in ordering a custom gift.\n\nDetails:\n- Craft Category: ${form.craft || 'Not selected'}\n- Budget: ${form.budget || 'Not selected'}\n\nMy Request:\n${form.message || 'Please contact me to discuss further.'}\n\nYou can reach me at: ${form.phone || 'Not provided'}\n\nThank you!`;
-  };
-
-  const handleSendEmail = (e: React.FormEvent) => {
+  const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (imagePreview) {
-      alert("Please remember to manually attach your reference image to the email before sending!");
-    }
+    if (!valid || botField) return;
+    setSubmitting(true);
+
     const subject = `Custom Gift Enquiry from ${form.name || 'Customer'}`;
-    const body = getEmailMessage();
-    const url = `mailto:giftshop.vlr@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = url;
+    const contactInfo = `Phone: ${form.phone}\nEmail: ${form.email || 'Not provided'}`;
+    const body = `Hello Gift Shop Vellore,\n\nMy name is ${form.name || 'Customer'}.\n\nI am interested in ordering a custom gift.\n\nDetails:\n- Craft Category: ${form.craft || 'Not selected'}\n- Budget: ${form.budget || 'Not selected'}\n- ${contactInfo}\n\nMy Request:\n${form.message || 'Please contact me to discuss further.'}\n\nThank you!`;
+
+    const payload = new FormData();
+    payload.append('access_key', '7dba30b9-e27c-4c29-9603-ca6195ab5d79');
+    payload.append('subject', subject);
+    payload.append('from_name', form.name || 'Customer');
+    payload.append('email', 'giftshop.vlr@gmail.com');
+    payload.append('message', body);
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        alert('Something went wrong. Please email us directly at giftshop.vlr@gmail.com or try again.');
+      }
+    } catch {
+      alert('Network error. Please email us directly at giftshop.vlr@gmail.com or try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
-    if (imagePreview) {
-      alert("Please remember to manually attach your reference image in your WhatsApp message after it opens!");
-    }
     const text = getEnquiryMessage();
     const url = `https://wa.me/919514585959?text=${text}`;
     window.open(url, '_blank');
@@ -88,30 +139,35 @@ export default function CustomOrder() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* Left info */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="glass-lux-light p-8 border border-[var(--gold)]/15 rounded-2xl shadow-xl bg-black/30">
-              <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center mb-6 bg-white/5 shadow-md">
+            <div className="glass-lux-light p-8 border border-[var(--border)] rounded-2xl shadow-lg">
+              <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center mb-6 bg-white shadow-md">
                 <Mail size={22} className="text-[var(--gold)]" />
               </div>
               <h3 className="font-serif-lux text-2xl text-[var(--cream)] mb-2 font-semibold">Email Us</h3>
               <p className="text-[var(--cream)]/60 text-xs tracking-wider uppercase mb-3 font-sans-lux font-medium">We reply very fast</p>
-              <a href="mailto:giftshop.vlr@gmail.com" className="text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors font-sans-lux font-bold text-base block break-all">
+              <a href="mailto:giftshop.vlr@gmail.com" className="text-[var(--primary)] hover:text-[var(--primary-hover)] transition-colors font-sans-lux font-bold text-base block break-all">
                 giftshop.vlr@gmail.com
               </a>
             </div>
 
-            <div className="glass-lux-light p-8 border border-[var(--gold)]/15 rounded-2xl shadow-xl bg-black/30">
-              <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center mb-6 bg-white/5 shadow-md">
+            <div className="glass-lux-light p-8 border border-[var(--border)] rounded-2xl shadow-lg">
+              <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center mb-6 bg-white shadow-md">
                 <Phone size={22} className="text-[var(--gold)]" />
               </div>
               <h3 className="font-serif-lux text-2xl text-[var(--cream)] mb-2 font-semibold">Call Us</h3>
               <p className="text-[var(--cream)]/60 text-xs tracking-wider uppercase mb-3 font-sans-lux font-medium">Direct phone order</p>
-              <a href="tel:9514585959" className="text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors font-sans-lux font-bold text-lg block">
+              <a href="tel:9514585959" className="text-[var(--primary)] hover:text-[var(--primary-hover)] transition-colors font-sans-lux font-bold text-lg block">
                 9514585959
               </a>
             </div>
 
-            <div className="glass-lux-light p-8 border border-[var(--gold)]/15 rounded-2xl shadow-xl bg-black/30">
-              <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center mb-6 bg-white/5 shadow-md">
+            <a
+              href={STORE_MAPS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-lux-light p-8 border border-[var(--border)] rounded-2xl shadow-lg block group cursor-pointer hover:border-[var(--gold)]/40 transition-all duration-300"
+            >
+              <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/30 flex items-center justify-center mb-6 bg-white shadow-md group-hover:border-[var(--gold)]/60 transition-colors">
                 <MapPin size={22} className="text-[var(--gold)]" />
               </div>
               <h3 className="font-serif-lux text-2xl text-[var(--cream)] mb-2 font-semibold">Our Vellore Store</h3>
@@ -119,151 +175,171 @@ export default function CustomOrder() {
                 Gift Shop Vellore<br />
                 Siva Complex, 239/1, Phase 2<br />
                 Sathuvachari, Vellore, Tamil Nadu 632009<br />
-                <span className="text-[var(--gold)] text-xs font-semibold block mt-3">✓ Open Monday to Saturday</span>
+                <span className="text-[var(--primary)] text-xs font-semibold block mt-3">✓ Open Monday to Saturday</span>
               </p>
-            </div>
+            </a>
           </div>
 
           {/* Form */}
           <div ref={formRef} className="scroll-fade lg:col-span-3">
-            <div className="glass-lux-light p-8 md:p-10 border border-[var(--gold)]/20 rounded-2xl shadow-2xl relative overflow-hidden bg-black/40">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--gold)]/60 to-transparent" />
+            <div className="bg-white border border-[var(--border)] rounded-2xl shadow-xl relative overflow-hidden">
+              <div className="p-8 md:p-10">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--primary)]/60 to-transparent" />
 
+                {submitted ? (
+                  <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
+                    <div className="w-16 h-16 rounded-full bg-[var(--primary)]/20 flex items-center justify-center mb-6">
+                      <Mail size={28} className="text-[var(--primary)]" />
+                    </div>
+                    <h3 className="font-serif-lux text-3xl text-[var(--cream)] mb-3 font-semibold">Thank you, {form.name || 'friend'}!</h3>
+                    <p className="text-[var(--cream)]/70 font-sans-lux max-w-md leading-relaxed">
+                      We&apos;ve received your custom gift enquiry. Our team will review it and get back to you on the same day with pricing and details.
+                    </p>
+                  </div>
+                ) : (
                 <form onSubmit={handleSendEmail} className="space-y-6 font-sans-lux">
+                  {/* Honeypot */}
+                  <div className="absolute -left-[9999px]" aria-hidden="true">
+                    <input name="bot-field" value={botField} onChange={(e) => setBotField(e.target.value)} tabIndex={-1} autoComplete="off" />
+                  </div>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-2 block font-bold font-sans-lux">
-                        Your Full Name
+                        Your Full Name *
                       </label>
                       <input
                         name="name"
                         type="text"
-                        required
                         value={form.name}
                         onChange={handleChange}
+                        onBlur={() => handleBlur('name')}
                         placeholder="e.g. Ramesh Kumar"
-                        className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream)]/30 text-sm focus:outline-none focus:border-[var(--gold)] transition-colors duration-300"
+                        className={`w-full bg-[var(--charcoal)] border rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream-muted)] text-sm focus:outline-none transition-colors duration-300 ${
+                          touched.name && errors.name ? 'border-red-400 focus:border-red-400' : 'border-[var(--border)] focus:border-[var(--primary)]'
+                        }`}
                       />
+                      {touched.name && errors.name && <p className="text-red-400 text-[11px] mt-1.5 font-medium">{errors.name}</p>}
                     </div>
                     <div>
                       <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-2 block font-bold font-sans-lux">
-                        Phone Number or Email
+                        Phone Number *
                       </label>
                       <input
                         name="phone"
                         type="text"
-                        required
+                        inputMode="numeric"
                         value={form.phone}
                         onChange={handleChange}
-                        placeholder="e.g. 9876543210 or email"
-                        className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream)]/30 text-sm focus:outline-none focus:border-[var(--gold)] transition-colors duration-300"
+                        onBlur={() => handleBlur('phone')}
+                        placeholder="e.g. 9876543210"
+                        maxLength={10}
+                        className={`w-full bg-[var(--charcoal)] border rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream-muted)] text-sm focus:outline-none transition-colors duration-300 ${
+                          touched.phone && errors.phone ? 'border-red-400 focus:border-red-400' : 'border-[var(--border)] focus:border-[var(--primary)]'
+                        }`}
                       />
+                      {touched.phone && errors.phone && <p className="text-red-400 text-[11px] mt-1.5 font-medium">{errors.phone}</p>}
                     </div>
                   </div>
 
                   <div>
+                    <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-2 block font-bold font-sans-lux">
+                      Email <span className="font-normal lowercase">(optional)</span>
+                    </label>
+                    <input
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      onBlur={() => handleBlur('email')}
+                      placeholder="e.g. name@example.com"
+                      className={`w-full bg-[var(--charcoal)] border rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream-muted)] text-sm focus:outline-none transition-colors duration-300 ${
+                        touched.email && errors.email ? 'border-red-400 focus:border-red-400' : 'border-[var(--border)] focus:border-[var(--primary)]'
+                      }`}
+                    />
+                    {touched.email && errors.email && <p className="text-red-400 text-[11px] mt-1.5 font-medium">{errors.email}</p>}
+                  </div>
+
+                  <div>
                     <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-3 block font-bold font-sans-lux">
-                      Select Craft Category
+                      Select Craft Category *
                     </label>
                     <div className="flex flex-wrap gap-2.5">
                       {crafts.map((c) => (
                         <button
                           key={c}
                           type="button"
-                          onClick={() => setForm((f) => ({ ...f, craft: c }))}
+                          onClick={() => { updateField('craft', c); setTouched((t) => ({ ...t, craft: true })); }}
                           className={`text-xs px-4 py-2.5 rounded-xl tracking-wider border transition-all duration-300 font-bold ${
                             form.craft === c
-                              ? 'bg-[var(--gold)] text-[var(--obsidian)] border-[var(--gold)] shadow-md shadow-[var(--gold)]/20'
-                              : 'border-white/15 text-[var(--cream)]/70 hover:border-[var(--gold)]/50 bg-white/5'
+                              ? 'bg-[var(--gold)] text-[#1a1a24] border-[var(--gold)] shadow-md shadow-[var(--gold)]/20'
+                              : 'border-[var(--border)] text-[var(--cream)]/70 hover:border-[var(--gold)]/50 bg-white'
                           }`}
                         >
                           {c}
                         </button>
                       ))}
                     </div>
+                    {touched.craft && errors.craft && <p className="text-red-400 text-[11px] mt-1.5 font-medium">{errors.craft}</p>}
                   </div>
 
                   <div>
                     <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-3 block font-bold font-sans-lux">
-                      Approximate Budget
+                      Approximate Budget *
                     </label>
                     <div className="flex flex-wrap gap-2.5">
                       {budgets.map((b) => (
                         <button
                           key={b}
                           type="button"
-                          onClick={() => setForm((f) => ({ ...f, budget: b }))}
+                          onClick={() => { updateField('budget', b); setTouched((t) => ({ ...t, budget: true })); }}
                           className={`text-xs px-4 py-2.5 rounded-xl tracking-wider border transition-all duration-300 font-bold ${
                             form.budget === b
-                              ? 'bg-[var(--gold)] text-[var(--obsidian)] border-[var(--gold)] shadow-md shadow-[var(--gold)]/20'
-                              : 'border-white/15 text-[var(--cream)]/70 hover:border-[var(--gold)]/50 bg-white/5'
+                              ? 'bg-[var(--gold)] text-[#1a1a24] border-[var(--gold)] shadow-md shadow-[var(--gold)]/20'
+                              : 'border-[var(--border)] text-[var(--cream)]/70 hover:border-[var(--gold)]/50 bg-white'
                           }`}
                         >
                           {b}
                         </button>
                       ))}
                     </div>
+                    {touched.budget && errors.budget && <p className="text-red-400 text-[11px] mt-1.5 font-medium">{errors.budget}</p>}
                   </div>
 
                   <div>
                     <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-2 block font-bold font-sans-lux">
-                      Tell Us About Your Custom Gift Idea
+                      Tell Us About Your Custom Gift Idea *
                     </label>
                     <textarea
                       name="message"
-                      required
                       value={form.message}
                       onChange={handleChange}
+                      onBlur={() => handleBlur('message')}
                       rows={5}
                       placeholder="e.g. I want a beautiful blue epoxy table for my dining room... OR I want a custom nameplate for my office door..."
-                      className="w-full bg-black/50 border border-white/15 rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream)]/30 text-sm focus:outline-none focus:border-[var(--gold)] transition-colors duration-300 resize-none"
+                      className={`w-full bg-[var(--charcoal)] border rounded-xl px-4 py-3.5 text-[var(--cream)] placeholder-[var(--cream-muted)] text-sm focus:outline-none transition-colors duration-300 resize-none ${
+                        touched.message && errors.message ? 'border-red-400 focus:border-red-400' : 'border-[var(--border)] focus:border-[var(--primary)]'
+                      }`}
                     />
+                    {touched.message && errors.message && <p className="text-red-400 text-[11px] mt-1.5 font-medium">{errors.message}</p>}
                   </div>
 
-                  {/* Image upload */}
-                  <div>
-                    <label className="text-xs text-[var(--cream)]/80 tracking-wider uppercase mb-2 block font-bold font-sans-lux">
-                      Attach Reference Image (optional)
-                    </label>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageSelect}
-                      className="hidden"
-                      id="custom-order-image"
-                    />
-                    {imagePreview ? (
-                      <div className="relative inline-flex items-center gap-3 border border-[var(--gold)]/30 rounded-xl p-3 bg-black/40">
-                        <img src={imagePreview} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-white/20" />
-                        <span className="text-xs text-emerald-400 font-semibold">Image selected</span>
-                        <button
-                          type="button"
-                          onClick={removeImage}
-                          className="ml-auto p-1 rounded-full bg-white/10 hover:bg-red-500/30 transition-colors"
-                        >
-                          <X size={14} />
-                        </button>
-                      </div>
-                    ) : (
-                      <label
-                        htmlFor="custom-order-image"
-                        className="flex items-center gap-3 border border-dashed border-white/20 rounded-xl px-4 py-4 hover:border-[var(--gold)] transition-colors cursor-pointer bg-black/30"
-                      >
-                        <ImageIcon size={20} className="text-[var(--gold)]/60" />
-                        <span className="text-xs text-[var(--cream)]/60 font-medium">Click to upload an image (photo, sketch, or reference)</span>
-                      </label>
-                    )}
-                  </div>
+                  <p className="text-xs text-[var(--cream-muted)]/80 text-center -mt-2">
+                    Have a reference photo? Send it to us on <strong>WhatsApp</strong> after submitting this form.
+                  </p>
 
                   {/* Dual action buttons */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     <button
                       type="submit"
-                      className="btn-gold flex items-center justify-center gap-2.5 text-xs uppercase py-4 rounded-xl tracking-[0.2em] font-bold shadow-xl shadow-[var(--gold)]/20 hover:scale-[1.02] transition-transform"
+                      disabled={submitting || !valid}
+                      className="btn-gold flex items-center justify-center gap-2.5 text-xs uppercase py-4 rounded-xl tracking-[0.2em] font-bold shadow-xl shadow-[var(--gold)]/20 hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      <Mail size={16} />
-                      Send Email
+                      {submitting ? (
+                        <>Sending...</>
+                      ) : (
+                        <><Mail size={16} /> Send Email</>
+                      )}
                     </button>
                     <button
                       type="button"
@@ -279,6 +355,8 @@ export default function CustomOrder() {
                     ✓ Fast friendly reply · No hidden charges · Best price guaranteed
                   </p>
                 </form>
+                )}
+            </div>
             </div>
           </div>
         </div>
