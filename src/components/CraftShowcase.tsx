@@ -50,28 +50,25 @@ export default function CraftShowcase() {
                 <div
                   key={craft.title}
                   ref={ref}
-                  className="scroll-fade relative overflow-hidden border border-[var(--gold)]/15 hover:border-[var(--gold)]/40 transition-all duration-500 group rounded-2xl shadow-xl"
+                  className="scroll-fade bg-white p-8 rounded-2xl shadow-sm border border-zinc-100 hover:border-[var(--gold)]/40 transition-all duration-500 group"
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] opacity-90" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-                  <div className="relative z-10 p-8 flex items-start gap-6">
-                    <div className="w-14 h-14 rounded-2xl border border-[var(--gold)]/40 flex items-center justify-center text-2xl flex-shrink-0 bg-black/30 group-hover:scale-110 group-hover:border-[var(--gold)] transition-all duration-400 shadow-lg">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 rounded-2xl border border-zinc-200 flex items-center justify-center text-2xl flex-shrink-0 bg-zinc-50 group-hover:scale-110 group-hover:border-[var(--gold)]/40 transition-all duration-400 shadow-sm">
                       {craft.emoji}
                     </div>
                     <div className="flex-1 font-sans-lux">
-                      <h3 className="font-serif-lux text-2xl md:text-3xl text-white mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
+                      <h3 className="font-serif-lux text-2xl md:text-3xl text-zinc-900 mb-2 font-semibold group-hover:text-[var(--gold)] transition-colors">
                         {craft.title}
                       </h3>
-                      <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-6 font-normal">
+                      <p className="text-zinc-600 text-sm md:text-base leading-relaxed mb-6 font-normal">
                         {craft.desc}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {craft.stats.map((stat) => (
                           <span
                             key={stat}
-                            className="text-[11px] tracking-[0.15em] uppercase text-white bg-[var(--primary)]/90 px-3.5 py-1.5 rounded-lg font-bold"
+                            className="text-[11px] tracking-[0.15em] uppercase font-bold px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800"
                           >
                             {stat}
                           </span>
