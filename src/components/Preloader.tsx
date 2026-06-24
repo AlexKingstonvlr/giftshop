@@ -40,8 +40,8 @@ export default function Preloader() {
       {/* Logo */}
       <div className="mb-12 animate-fade-in-up text-center">
         <div className="flex items-center justify-center gap-3.5 mb-2">
-          <div className="w-12 h-12 rounded-full overflow-hidden border border-[var(--gold)]/40 flex items-center justify-center bg-white">
-            <img src="/GSV-logo.png" alt="GSV" className="w-full h-full object-contain p-1" />
+          <div className="w-12 h-12 rounded-full border border-[var(--gold)]/40 flex items-center justify-center">
+            <span className="font-serif-lux text-2xl italic text-[var(--gold)] font-bold">G</span>
           </div>
           <div className="text-left">
             <div className="font-serif-lux text-2xl md:text-3xl tracking-[0.15em] text-[var(--cream)] font-bold">

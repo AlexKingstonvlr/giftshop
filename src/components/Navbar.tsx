@@ -57,8 +57,8 @@ export default function Navbar() {
               }
             }}
           >
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-[var(--gold)]/40 flex items-center justify-center bg-white group-hover:border-[var(--gold)] transition-colors">
-              <img src="/GSV-logo.png" alt="GSV" className="w-full h-full object-contain p-1" />
+            <div className="w-10 h-10 rounded-full border border-[var(--gold)]/40 flex items-center justify-center bg-black/40 backdrop-blur-sm group-hover:border-[var(--gold)] transition-colors">
+              <span className="font-serif-lux text-[var(--gold)] text-xl italic font-bold">G</span>
             </div>
             <div className="flex flex-col leading-tight">
               <span className="font-serif-lux text-xl md:text-2xl tracking-[0.15em] font-semibold text-[var(--cream)]">
